@@ -23,7 +23,7 @@ void savebmp (const char *filename, int w, int h, int dpi, RGBType *data)
 {
     FILE *f;
     int k = w*h;
-    int s = 4*k;
+    int s = 3*k;
     int filesize = 54 + s;
 
     double factor = 39.375;
