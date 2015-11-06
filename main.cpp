@@ -71,21 +71,17 @@ void savebmp (const char *filename, int w, int h, int dpi, RGBType *data)
 
     for(int i = 0; i < k; i++)
     {
-        RGBType rgb = data[i];
-
         double red = (data[i].r)*255;
         double green = (data[i].g)*255;
         double blue = (data[i].b)*255;
 
-        unsigned char color[3]={(unsigned char)floor(red),(unsigned char)floor(green),(unsigned char)floor(blue)};
+        unsigned char color[3]={(unsigned char)floor(blue),(unsigned char)floor(green),(unsigned char)floor(red)};
 
         fwrite(color,1,3,f);
     }
 
     fclose(f);
 }
-
-int thisone;
 
 int main(int argc, char *argv[])
 {
@@ -95,6 +91,7 @@ int main(int argc, char *argv[])
     int width=640;
     int height=480;
     int n = width*height;
+    int thisone;
     RGBType *pixels = new RGBType[n];
 
     for (int x = 0; x < width; x++)
@@ -103,9 +100,9 @@ int main(int argc, char *argv[])
         {
             thisone = y*width + x;
             //return colors
-            pixels[thisone].r=10;
-            pixels[thisone].g=10;
-            pixels[thisone].b=10;
+            pixels[thisone].r=34./255;
+            pixels[thisone].g=177./255;
+            pixels[thisone].b=176./255;
         }
     }
 
