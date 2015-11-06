@@ -94,15 +94,24 @@ int main(int argc, char *argv[])
     int thisone;
     RGBType *pixels = new RGBType[n];
 
-    for (int x = 0; x < width; x++)
+    for (int x = 0; x < width; x++) //percorre os pixels um a um
     {
         for(int y = 0; y < height; y++)
         {
             thisone = y*width + x;
-            //return colors
-            pixels[thisone].r=34./255;
-            pixels[thisone].g=177./255;
-            pixels[thisone].b=176./255;
+
+            if((x > 200 && x < 440) && (y > 200 && y < 280))
+            {
+                pixels[thisone].r=34./255; //vetor pixels é a matrix feita numa linha (daí que vem o indice thisone)
+                pixels[thisone].g=177./255;
+                pixels[thisone].b=176./255;
+            }
+            else
+            {
+                pixels[thisone].r=0./255;
+                pixels[thisone].g=0./255;
+                pixels[thisone].b=0./255;
+            }
         }
     }
 
