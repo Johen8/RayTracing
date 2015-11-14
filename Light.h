@@ -3,8 +3,9 @@
 
 #include "Vect.h"
 #include "Color.h"
+#include "Source.h"
 
-class Light
+class Light : public Source
 {
     Vect position;
     Color color;
@@ -15,12 +16,12 @@ class Light
     Light(Vect, Color);
 
     //method functions
-    Vect getLightPosition()
+    virtual Vect getLightPosition()
     {
         return position;
     }
 
-    Color getLightColor()
+    virtual Color getColor()
     {
         return color;
     }

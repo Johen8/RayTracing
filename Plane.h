@@ -28,17 +28,17 @@ class Plane : public Object
         return distance;
     }
 
-    Color getPlaneColor()
+    virtual Color getColor()
     {
         return color;
     }
 
-    Vect getNormalAt(Vect point) //Implementar em Object?
+    virtual Vect getNormalAt(Vect point) //Implementar em Object?
     {
         return normal;
     }
 
-    double findIntersection(Ray ray) //Implementar em Object?
+    virtual double findIntersection(Ray ray) //Implementar em Object?
     {
         Vect ray_direction = ray.getRayDirection();
 

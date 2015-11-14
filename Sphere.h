@@ -28,19 +28,19 @@ class Sphere : public Object
         return radius;
     }
 
-    Color getSphereColor()
+    virtual Color getColor()
     {
         return color;
     }
 
-    Vect getNormalAt(Vect point)
+    virtual Vect getNormalAt(Vect point)
     {
         //normal always points away from the center of a sphere
         Vect normal_Vect = point.vectAdd(center.negative()).normalize();
         return normal_Vect;
     }
 
-    double findIntersection(Ray ray)
+    virtual double findIntersection(Ray ray)
     {
         Vect ray_origin = ray.getRayOrigin();
         double ray_origin_x = ray_origin.getVectX();
@@ -72,7 +72,7 @@ class Sphere : public Object
         {
             // the ray intercepts the sphere
             // the first root
-            double root_1 = ((-1*b - sqrt(discriminant))/2) - 0.00001;
+            double root_1 = ((-1*b - sqrt(discriminant))/2) - 0.000001;
             if (root_1 > 0)
             {
                 // the first root is the smallest positive root
@@ -81,7 +81,7 @@ class Sphere : public Object
             else
             {
                 // the second root is the smallest
-                double root_2 = ((-1*b + sqrt(discriminant))/2) - 0.00001;
+                double root_2 = ((-1*b + sqrt(discriminant))/2) - 0.000001;
                 return root_2;
             }
         }
