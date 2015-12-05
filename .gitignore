@@ -1,5 +1,6 @@
 #IGNORAR ARQUIVO .BAT QUE CRIEI
 abre.bat
+*.bmp
 
 # Windows image file caches
 Thumbs.db
