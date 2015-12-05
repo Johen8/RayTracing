@@ -20,6 +20,7 @@
 #include "Object.h"
 #include "Sphere.h"
 #include "Plane.h"
+#include "Triangle.h"
 
 using namespace std;
 
@@ -248,7 +249,7 @@ Color getColorAt(Vect intersection_position,
             bool shadowed = false;
 
             Vect distance_to_light = light_sources.at(light_index)->getLightPosition().vectAdd(
-                                                    intersection_position.negative()).normalize();
+                                                    intersection_position.negative());
             float distance_to_light_magnitude = distance_to_light.magnitude();
 
             Ray shadow_ray(intersection_position,
@@ -306,6 +307,49 @@ Color getColorAt(Vect intersection_position,
     return final_color.clip();
 }
 
+vector<Object*> scene_objects;
+
+void makeCube (Vect corner1, Vect corner2, Color color)
+{
+        //corner1
+        double c1x = corner1.getVectX();
+        double c1y = corner1.getVectY();
+        double c1z = corner1.getVectZ();
+
+        //corner2
+        double c2x = corner2.getVectX();
+        double c2y = corner2.getVectY();
+        double c2z = corner2.getVectZ();
+
+        Vect A(c2x, c1y, c1z);
+        Vect B(c2x, c1y, c2z);
+        Vect C(c1x, c1y, c2z);
+
+        Vect D(c2x, c2y, c1z);
+        Vect E(c1x, c2y, c1z);
+        Vect F(c1x, c2y, c2z);
+
+        //left side
+        scene_objects.push_back(new Triangle (D, A, corner1, color));
+        scene_objects.push_back(new Triangle (corner1, E, D, color));
+        //far side
+        scene_objects.push_back(new Triangle (corner2, B, A, color));
+        scene_objects.push_back(new Triangle (A, D, corner2, color));
+        //right side
+        scene_objects.push_back(new Triangle (F, C, B, color));
+        scene_objects.push_back(new Triangle (B, corner2, F, color));
+        //front side
+        scene_objects.push_back(new Triangle (E, corner1, C, color));
+        scene_objects.push_back(new Triangle (C, F, E, color));
+        //top
+        scene_objects.push_back(new Triangle (D, E, F, color));
+        scene_objects.push_back(new Triangle (F, corner2, D, color));
+        //bottom
+        scene_objects.push_back(new Triangle (corner1, A, B, color));
+        scene_objects.push_back(new Triangle (B, C, corner1, color));
+}
+
+
 int main(int argc, char *argv[])
 {
     cout << "rendering..." << endl;
@@ -320,7 +364,7 @@ int main(int argc, char *argv[])
     int thisone;
     RGBType *pixels = new RGBType[n];
 
-    int aadepth = 4;
+    int aadepth = 1;
     double aathreshold = 0.1;
     double aspectratio = (double)width/(double)height;
     double ambientlight = 0.2;
@@ -352,6 +396,7 @@ int main(int argc, char *argv[])
     Color checkered(0.5, 0.25, 0.25, 2);
     Color gray (0.5, 0.5, 0.5, 0);
     Color black (0.0, 0.0, 0.0, 0.0);
+    Color orange (0.94, 0.75, 0.31, 0.1);
 
     Vect light_position (-7, 10, -10);
     Light scene_light (light_position, white_light);
@@ -359,14 +404,18 @@ int main(int argc, char *argv[])
     light_sources.push_back(dynamic_cast<Source*>(&scene_light));
 
     //scene objects
-    Sphere scene_sphere (O, 1, pretty_green);
+    //Sphere scene_sphere (O, 1, pretty_green);
     Plane scene_plane(Y, -1, checkered); //Y É A NORMAL????
     Sphere scene_sphere2 (location2, 0.5, maroon);
+    //Triangle scene_triangle(Vect (3, 0, 0), Vect (0, 3, 0), Vect (0, 0, 3), orange);
 
-    vector<Object*> scene_objects;
-    scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere));
+
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere));
     scene_objects.push_back(dynamic_cast<Object*>(&scene_plane));
     scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere2));
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_triangle));
+
+    makeCube(Vect (1,1,1), Vect(-1,-1,-1), orange);
 
     double xamnt, yamnt;
     //double tempRed, tempGreen, tempBlue;
@@ -518,14 +567,15 @@ int main(int argc, char *argv[])
             pixels[thisone].b=avgBlue;
         }
     }
-
-    savebmp("sceneAA.bmp", width, height, dpi, pixels);
+    string filename = "teste.bmp";
+    savebmp(filename.c_str(), width, height, dpi, pixels);
 
     delete pixels;//, tempRed, tempGreen, tempBlue;
 
     t2 = clock();
     float diff = ((float)t2 - (float)t1)/1000;
-    cout << diff << " seconds" << endl;
 
+    cout << diff << " seconds" << endl;
+    cout << "Output: " << filename << endl;
     return 0;
 }
