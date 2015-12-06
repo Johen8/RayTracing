@@ -1,10 +1,21 @@
-INC=-I "./"
+OBJ = main.o
 
-FLAGS=$(INC)
+INC = -I "./"
 
-all:
-	g++ main.cpp Essentials.cpp $(FLAGS)
+
+
+RayTracing: $(OBJ)
+	g++ $(OBJ) -o RayTracing.exe
+
+	rm -f $(OBJ)
+
+
+
+main.o:
+
+	g++ -c main.cpp $(INC)
+
 
 
 clean:
-	rm -f *.o RayTracing
+	rm -f $(OBJ) RayTracing

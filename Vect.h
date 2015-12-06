@@ -1,6 +1,5 @@
 #ifndef _VECT_H
 #define _VECT_H
-#include<cmath>
 
 class Vect
 {
