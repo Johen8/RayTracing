@@ -70,16 +70,15 @@ void makeCube (Vect corner1, Vect corner2, Color color, vector<Object*>& scene_o
 
 int main()
 {
-    cout << "rendering..." << endl;
-
     clock_t t1, t2;
     time_t now;
     t1 = clock();
 
     vector<Object*> scene_objects;
+    vector<Source*> light_sources;
 
     char arquivo[25];
-    string path = "T:\\GitHub\\RayTracing\\Resultados\\";
+    string path;
     string filename2;
 
     int dpi=72;
@@ -87,7 +86,26 @@ int main()
     double ambientlight;
     Vect campos, look_at;// (3, 1.5, -4);
     //Vect look_at (0,0,0);
-    SceneParser(height, width, aadepth, ambientlight, campos, look_at, scene_objects);
+    try
+    {
+        SceneParser(height, width, aadepth, ambientlight, campos, look_at, scene_objects,
+                light_sources, path);
+    }
+    catch (int err)
+    {
+        if (err == -1)
+        {
+            cout << "It was not possible to open the \"scenefile.txt\" file, check if it is in the folder"<< endl;
+            return -1;
+        }
+        else if (err == -2)
+        {
+            cout << "Invalid path chosen! Please verify Scene File!" <<endl;
+            return -2;
+        }
+    }
+    cout <<endl<< "rendering..." << endl;
+
     int n = width*height;
     int thisone;
     RGBType *pixels = new RGBType[n];
@@ -101,7 +119,7 @@ int main()
     Vect Y (0,1,0);
     Vect Z (0,0,1);
 
-    Vect location2 (1.75, 0, 0);
+    //Vect location2 (1.75, 0, 0);
 
 
     Vect diff_btw (campos.getVectX() - look_at.getVectX(),
@@ -122,20 +140,19 @@ int main()
     Color black (0.0, 0.0, 0.0, 0.0);
     Color orange (0.94, 0.75, 0.31, 0.1);
 
-    Vect light_position (-7, 10, -10);
-    Light scene_light (light_position, white_light);
-    vector<Source*> light_sources;
-    light_sources.push_back(dynamic_cast<Source*>(&scene_light));
+    //Vect light_position (-7, 10, -10);
+    //Light scene_light (light_position, white_light);
+    //light_sources.push_back(dynamic_cast<Source*>(&scene_light));
 
     //scene objects
     //Sphere scene_sphere (O, 1, pretty_green);
-    Plane scene_plane(Y, -1, checkered); //Y É A NORMAL????
+    //Plane scene_plane(Y, -1, checkered); //Y É A NORMAL????
     //Sphere scene_sphere2 (location2, 0.5, maroon);
     //Triangle scene_triangle(Vect (3, 0, 0), Vect (0, 3, 0), Vect (0, 0, 3), orange);
 
 
     //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere));
-    scene_objects.push_back(dynamic_cast<Object*>(&scene_plane));
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_plane));
     //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere2));
     //scene_objects.push_back(dynamic_cast<Object*>(&scene_triangle));
 
@@ -306,7 +323,7 @@ int main()
     t2 = clock();
     float diff = ((float)t2 - (float)t1)/1000;
 
-    cout << diff << " seconds" << endl;
+    cout <<endl<< "It took me "<<diff << " seconds to render!" << endl;
     cout << "Output: " << filename2.c_str() << endl;
     return 0;
 }
