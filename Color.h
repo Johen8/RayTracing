@@ -31,10 +31,10 @@ class Color
         return special;
     }
 
-    double setColorRed(double redValue) { red = redValue; }
-    double setColorGreen(double greenValue) { green = greenValue; }
-    double setColorBlue(double blueValue) { blue = blueValue; }
-    double setColorSpecial(double specialValue) { special = specialValue; }
+    void setColorRed(double redValue) { red = redValue; }
+    void setColorGreen(double greenValue) { green = greenValue; }
+    void setColorBlue(double blueValue) { blue = blueValue; }
+    void setColorSpecial(double specialValue) { special = specialValue; }
 
     double brightness()
     {

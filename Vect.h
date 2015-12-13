@@ -11,6 +11,12 @@ class Vect
     Vect(double, double, double);
 
     //method functions
+    void setVect(double xs, double ys, double zs)
+    {
+        x = xs;
+        y = ys;
+        z = zs;
+    }
     double getVectX()
     {
         return x;
