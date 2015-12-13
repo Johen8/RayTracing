@@ -325,9 +325,5 @@ int main()
 
     cout <<endl<< "It took me "<<diff << " seconds to render!" << endl;
     cout << "Output: " << filename2.c_str() << endl;
-    cout <<endl<<"Press any key to exit!" << endl;
-    getchar();
-
-
     return 0;
 }
