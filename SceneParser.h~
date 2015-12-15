@@ -148,7 +148,7 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
         for (int i = 0; i < spheres; i++)
         {
             scenefile >> xi >> yi >> zi >> ri;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " r: " << ri <<endl;
+            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " d: " << di <<endl;
             scenefile.ignore();
             scenefile >> cri >> cgi >> cbi >> csi;
             cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
@@ -167,7 +167,6 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
 
         getline(scenefile,input); // N Cubes
         scenefile >> cubes;		// get
-        cout<<endl<<"N of Cubes: "<< cubes <<endl;
         getline(scenefile,input); // Remove line
 
         getline(scenefile,input); // Cubes
@@ -175,16 +174,16 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
         for (int i = 0; i < cubes; i++)
         {
             scenefile >> xi >> yi >> zi;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
+            //cout << xi << ri << csi <<endl;
             Vect location (xi, yi, zi);
             scenefile >> xi >> yi >> zi;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
             Vect location2 (xi, yi, zi);
             scenefile >> cri >> cgi >> cbi >> csi;
-            cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
+            //cout << location.getVectX() << endl;
             Color scolor (cri, cgi, cbi, csi);
+            //cout << scolor.getColorBlue() << endl;
             makeCube(location, location2, scolor, scene_objects);
         		getline(scenefile,input); // Remove line
         }
