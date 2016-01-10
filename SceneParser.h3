@@ -56,6 +56,7 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
     if(scenefile.is_open())
     {
         getline(scenefile,input); //1
+        //cout << input << endl;
         getline(scenefile,input); //2
         getline(scenefile,input); //3
         getline(scenefile,input); //4
@@ -65,38 +66,41 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
         testPath(path);
 
         cout << endl << "Chosen path:" << path << endl;
+        //scenefile.ignore();
 
-        getline(scenefile,input); //6
-        scenefile >> width;       //7
-        getline(scenefile,input); //7
-        getline(scenefile,input); //8
-        scenefile >> height;		 //9
-        getline(scenefile,input); //9
-        getline(scenefile,input); //10
-        scenefile >> aadepth;     //11
-        getline(scenefile,input); //11
+        getline(scenefile,input);
+        //cout << input << endl;
+        scenefile >> width;
+        //cout << width << endl;
+        //scenefile.ignore();
+        getline(scenefile,input);
+        //cout << input << endl;
+        scenefile >> height;
+        //cout << height << endl;
+        //scenefile.ignore();
+
+        getline(scenefile,input);
+        scenefile >> aadepth;
+        //scenefile.ignore();
+
         cout<<endl<<"Image with resolution "<<width<<"x"<<height<<" and AA depth of "<<aadepth<<endl;
 
-        getline(scenefile,input); //12
-        scenefile >> ambientlight; //13
-        getline(scenefile,input); //13
+        getline(scenefile,input);
+        scenefile >> ambientlight;
+        //scenefile.ignore();
 
-        getline(scenefile,input); //14
-        scenefile >> sources;     //15
-        getline(scenefile,input); //15
+        getline(scenefile,input);
+        scenefile >> sources;
+        //scenefile.ignore();
 
-        getline(scenefile,input); //16
-        getline(scenefile,input); //17
-        cout<<endl<<"Ambient Ligth: "<<ambientlight<<", N Sources: "<< sources <<endl;
+        getline(scenefile,input);
+        getline(scenefile,input);
         for (int i = 0; i < sources; i++)
         {
-					 // READ FORMAT 18
             scenefile >> xi >> yi >> zi;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
             scenefile.ignore();
             scenefile >> cri >> cgi >> cbi;
-        		getline(scenefile,input);     // FORMAT 18
-            cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi <<endl;
+            //cout << xi << zi << cri <<endl;
             Vect location (xi, yi, zi);
             //cout << location.getVectX() << endl;
             Color scolor (cri, cgi, cbi, 0);
@@ -104,54 +108,53 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
             Light* light_input = new Light(location, scolor);
             light_sources.push_back(dynamic_cast<Source*>(light_input));
         }
+        //scenefile.ignore();
 
-        getline(scenefile,input); // CAMERA POSITION
-        scenefile >> xi >> yi >> zi;  // get
+        getline(scenefile,input);
+        scenefile >> xi >> yi >> zi;
         campos.setVect(xi, yi, zi);
-        cout << endl << "CAM POS  "<<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-        getline(scenefile,input);  //Remove line
+        //scenefile.ignore();
 
-        getline(scenefile,input);   // Where to look
-        scenefile >> xi >> yi >> zi; //get
-        cout << "Look At  "<<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
+        getline(scenefile,input);
+        scenefile >> xi >> yi >> zi;
         look_at.setVect(xi, yi, zi);
-        getline(scenefile,input);  //Remove line
+        //scenefile.ignore();
 
-        getline(scenefile,input); // N PLANES
-        scenefile >> planes;      // get
-        cout<<endl<<"N of Planes: "<<planes<<endl;
-        getline(scenefile,input); // Remove line
+        getline(scenefile,input);
+        scenefile >> planes;
+        //scenefile.ignore();
 
-        getline(scenefile,input); //planes
-        getline(scenefile,input); // Format planes
+        getline(scenefile,input);
+        getline(scenefile,input);
         for (int i = 0; i < planes; i++)
         {
             scenefile >> xi >> yi >> zi >> di;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " d: " << di <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
             scenefile >> cri >> cgi >> cbi >> csi;
-            cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
+            //cout << xi << di << csi <<endl;
             Vect location (xi, yi, zi);
+            //cout << location.getVectX() << endl;
             Color scolor (cri, cgi, cbi, csi);
+            //cout << scolor.getColorBlue() << endl;
             Plane* plane_input = new Plane(location, di, scolor);
             scene_objects.push_back(dynamic_cast<Object*>(plane_input));
-        		getline(scenefile,input); // Remove line
         }
+        //scenefile.ignore();
 
-        getline(scenefile,input); // N Spheres
-        scenefile >> spheres;  // get
-        cout<<endl<<"N of Spheres: "<<spheres<<endl;
-        getline(scenefile,input); // Remove line
+        getline(scenefile,input);
+        scenefile >> spheres;
+        //cout << spheres << endl;
+        //scenefile.ignore();
 
-        getline(scenefile,input); // Spheres
-        getline(scenefile,input); // Format Spheres
+        getline(scenefile,input);
+        getline(scenefile,input);
         for (int i = 0; i < spheres; i++)
         {
             scenefile >> xi >> yi >> zi >> ri;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " r: " << ri <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
             scenefile >> cri >> cgi >> cbi >> csi;
-            cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
+            //cout << zi << ri << endl;
+            //cout << xi << ri << csi <<endl;
             Vect location (xi, yi, zi);
             //cout << location.getVectX() << endl;
             Color scolor (cri, cgi, cbi, csi);
@@ -162,32 +165,31 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
                                             //pointer that is destructed, but the memory allocated
                                             //by 'new' is still there (or something like that)
             scene_objects.push_back(dynamic_cast<Object*>(sphere_input));
-        		getline(scenefile,input); // Remove line
         }
+        //scenefile.ignore();
 
-        getline(scenefile,input); // N Cubes
-        scenefile >> cubes;		// get
-        cout<<endl<<"N of Cubes: "<< cubes <<endl;
-        getline(scenefile,input); // Remove line
+        getline(scenefile,input);
+        scenefile >> cubes;
+        //scenefile.ignore();
 
-        getline(scenefile,input); // Cubes
-        getline(scenefile,input); // Format Cubes
+        getline(scenefile,input);
+        getline(scenefile,input);
         for (int i = 0; i < cubes; i++)
         {
             scenefile >> xi >> yi >> zi;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
+            //cout << xi << ri << csi <<endl;
             Vect location (xi, yi, zi);
             scenefile >> xi >> yi >> zi;
-            cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-            scenefile.ignore();
+            //scenefile.ignore();
             Vect location2 (xi, yi, zi);
             scenefile >> cri >> cgi >> cbi >> csi;
-            cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
+            //cout << location.getVectX() << endl;
             Color scolor (cri, cgi, cbi, csi);
+            //cout << scolor.getColorBlue() << endl;
             makeCube(location, location2, scolor, scene_objects);
-        		getline(scenefile,input); // Remove line
         }
+        //scenefile.ignore();
     }
     else
     {
