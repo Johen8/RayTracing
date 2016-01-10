@@ -25,6 +25,8 @@
 #include "Essentials.h"
 #include "SceneParser.h"
 
+#include "omp.h"
+
 using namespace std;
 
 void makeCube (Vect corner1, Vect corner2, Color color, vector<Object*>& scene_objects)
@@ -109,7 +111,6 @@ int main()
     cout <<endl<< "rendering..." << endl;
 
     int n = width*height;
-    int thisone;
     RGBType *pixels = new RGBType[n];
 
    // double aathreshold = 0.1;
@@ -162,13 +163,20 @@ int main()
 
     double xamnt, yamnt;
     //double tempRed, tempGreen, tempBlue;
+    int x,y;
 
-    for (int x = 0; x < width; x++) //percorre os pixels um a um
+    #pragma omp parallel for private(y, xamnt, yamnt)
+    for (x = 0; x < width; x++) //percorre os pixels um a um
     {
-        for(int y = 0; y < height; y++)
+        for(y = 0; y < height; y++)
         {
-            thisone = y*width + x;
+            //cout<< y << endl;
 
+            int thisone=0;
+            #pragma omp critical
+            {
+                thisone = (y*width + x);
+            }
             //start with a blank pixel
             double tempRed[aadepth*aadepth];
             double tempGreen[aadepth*aadepth];
@@ -179,8 +187,6 @@ int main()
                 for(int aay = 0; aay < aadepth; aay++)
                 {
                     int aa_index = aay*aadepth + aax;
-
-                    srand(time(0));
 
                     // create the ray from the camera to this pixel
                     if(aadepth == 1)
@@ -305,9 +311,12 @@ int main()
             double avgGreen = totalGreen/(aadepth*aadepth);
             double avgBlue = totalBlue/(aadepth*aadepth);
 
-            pixels[thisone].r=avgRed;
-            pixels[thisone].g=avgGreen;
-            pixels[thisone].b=avgBlue;
+            #pragma omp critical
+            {
+                pixels[thisone].r=avgRed;
+                pixels[thisone].g=avgGreen;
+                pixels[thisone].b=avgBlue;
+            }
         }
     }
 
