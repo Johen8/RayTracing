@@ -10,7 +10,7 @@ class Sphere : public Object
 {
     Vect center;
     double radius;
-    Color color;
+
 
     public:
     Sphere();
@@ -94,7 +94,7 @@ class Sphere : public Object
 
 };
 
-Sphere::Sphere()
+Sphere::Sphere() //default sphere
 {
     center = Vect(0,0,0);
     radius = 1.0;
