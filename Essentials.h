@@ -13,6 +13,7 @@ struct RGBType
     float b;
 };
 
+//Function to output the data to a .bmp file
 void savebmp (const char *filename, int w, int h, int dpi, RGBType *data)
 {
     FILE *f;
@@ -77,17 +78,17 @@ void savebmp (const char *filename, int w, int h, int dpi, RGBType *data)
     }
     else
     {
-        cout << "ARQUIVO NAO FOI ABERTO!" <<endl;
+        cout << "It is not possible to open the output file!" <<endl;
     }
 
 
     fclose(f);
 }
 
+// return the index of the winning intersecition, that is, the closest intersection to the camera
 int winningObjectIndex(vector<double> object_intersections)
 {
-    // return the index of the winning intersecition
-    int index_of_minimum_value;
+        int index_of_minimum_value;
 
     //prevent unnessary calculations
     if (object_intersections.size() == 0)
@@ -114,23 +115,23 @@ int winningObjectIndex(vector<double> object_intersections)
     {
         //otherwise there is more than one intersection
         //first find the maximum value
-        double max = 0;
+        double maxim = 0;
         for (unsigned i = 0; i < object_intersections.size(); i++)
         {
-            if (max < object_intersections.at(i))
+            if (maxim < object_intersections.at(i))
             {
-                max = object_intersections.at(i);
+                maxim = object_intersections.at(i);
             }
         }
         // the starting from the maxmimum value to find the minimum positive value
-        if (max > 0)
+        if (maxim > 0)
         {
             //we only want positive intersections
             for (unsigned index = 0; index < object_intersections.size(); index++)
             {
-                if (object_intersections.at(index) > 0 && object_intersections.at(index) <= max)
+                if (object_intersections.at(index) > 0 && object_intersections.at(index) <= maxim)
                 {
-                    max = object_intersections.at(index);
+                    maxim = object_intersections.at(index);
                     index_of_minimum_value = index;
                 }
             }
@@ -145,6 +146,7 @@ int winningObjectIndex(vector<double> object_intersections)
 
 }
 
+//returns the color at a coordinate based on the intersection position of a ray
 Color getColorAt(Vect intersection_position,
                  Vect intersecting_ray_direction,
                  vector<Object*> scene_objects,
@@ -160,13 +162,7 @@ Color getColorAt(Vect intersection_position,
     { // checkered/tile floor pattern
         int square = (int)floor((intersection_position).getVectX())+
                      (int)floor((intersection_position).getVectZ());
-        if((square%2) == 0)
-        { //black tile
-            winning_object_color.setColorRed(0);
-            winning_object_color.setColorBlue(0);
-            winning_object_color.setColorGreen(0);
-        }
-        else
+        if((square%2) != 0)
         {
             //white tile
             winning_object_color.setColorBlue(1);
@@ -225,6 +221,7 @@ Color getColorAt(Vect intersection_position,
         }
     }
 
+    //produces shadows
     for (unsigned light_index = 0; light_index < light_sources.size(); light_index++)
     {
         Vect light_direction = light_sources.at(light_index)->getLightPosition().vectAdd(
@@ -270,7 +267,7 @@ Color getColorAt(Vect intersection_position,
                                                    light_sources.at(light_index)->getColor()).
                                                    colorScalar(cosine_angle));
                 if(winning_object_color.getColorSpecial() > 0 && winning_object_color.getColorSpecial() <= 1)
-                { //entre 0 e 1 é shininess, outros valores são outras coisas
+                {
                     double dot1 = winning_object_normal.dotProduct(
                                   intersecting_ray_direction.negative());
                     Vect scalar1 = winning_object_normal.vectMult(dot1);
@@ -293,7 +290,7 @@ Color getColorAt(Vect intersection_position,
         }
     }
 
-    return final_color.clip();
+    return final_color.clip(); //used to make the color values not to pass the maximum possible value
 }
 
 

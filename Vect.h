@@ -39,7 +39,7 @@ class Vect
 
     Vect normalize()
     {
-        double mag = this->magnitude(); //POSSÍVEL RAZÃO DE ERRO!! VERIFICAR!
+        double mag = this->magnitude();
         return Vect (x/mag,y/mag,z/mag);
     }
 

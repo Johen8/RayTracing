@@ -7,7 +7,6 @@
 #include<string>
 #include<vector>
 #include<cmath>
-#include<limits>
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -25,10 +24,11 @@
 #include "Plane.h"
 #include "Triangle.h"
 
+//this function is needed here because a cube is made of triangle components
 void makeCube (Vect corner1, Vect corner2, Color color, vector<Object*>& scene_objects);
 
 using namespace std;
-
+//test if given path is valid by creating a dummy file
 void testPath(string path)
 {
     string dummy = "dummy.txt";
@@ -53,7 +53,7 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
     double xi, yi, zi, ri, cri, cgi, cbi, csi, di;
     string input;
     scenefile.open("scenefile.txt");
-    if(scenefile.is_open())
+    if(scenefile.is_open()) //if cannot open scenefile, throw proper error
     {
         getline(scenefile,input); //1
         getline(scenefile,input); //2
@@ -109,22 +109,22 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
         scenefile >> xi >> yi >> zi;  // get
         campos.setVect(xi, yi, zi);
         cout << endl << "CAM POS  "<<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-        getline(scenefile,input);  //Remove line
+        getline(scenefile,input);
 
         getline(scenefile,input);   // Where to look
         scenefile >> xi >> yi >> zi; //get
         cout << "Look At  "<<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
         look_at.setVect(xi, yi, zi);
-        getline(scenefile,input);  //Remove line
+        getline(scenefile,input);
 
         getline(scenefile,input); // N PLANES
         scenefile >> planes;      // get
         cout<<endl<<"N of Planes: "<<planes<<endl;
-        getline(scenefile,input); // Remove line
+        getline(scenefile,input);
 
         getline(scenefile,input); //planes
         getline(scenefile,input); // Format planes
-        for (int i = 0; i < planes; i++)
+        for (int i = 0; i < planes; i++) //with the number of planes, adds them to the Object vector
         {
             scenefile >> xi >> yi >> zi >> di;
             cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " d: " << di <<endl;
@@ -134,14 +134,14 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
             Vect location (xi, yi, zi);
             Color scolor (cri, cgi, cbi, csi);
             Plane* plane_input = new Plane(location, di, scolor);
-            scene_objects.push_back(dynamic_cast<Object*>(plane_input));
-        		getline(scenefile,input); // Remove line
+            scene_objects.push_back(dynamic_cast<Object*>(plane_input)); //dynamic cast used to add a Plane object to a Object vector
+        		getline(scenefile,input);
         }
 
         getline(scenefile,input); // N Spheres
         scenefile >> spheres;  // get
         cout<<endl<<"N of Spheres: "<<spheres<<endl;
-        getline(scenefile,input); // Remove line
+        getline(scenefile,input);
 
         getline(scenefile,input); // Spheres
         getline(scenefile,input); // Format Spheres
@@ -160,9 +160,9 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
                                             //objects are destructed every iteration, and the vector
                                             //doesn't contain them anymore, this way it's just the
                                             //pointer that is destructed, but the memory allocated
-                                            //by 'new' is still there (or something like that)
+                                            //by 'new' is still there
             scene_objects.push_back(dynamic_cast<Object*>(sphere_input));
-        		getline(scenefile,input); // Remove line
+        		getline(scenefile,input);
         }
 
         getline(scenefile,input); // N Cubes
@@ -186,7 +186,7 @@ void SceneParser(int &height, int &width, int &aadepth, double &ambientlight,
             cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi << " S: " << csi <<endl;
             Color scolor (cri, cgi, cbi, csi);
             makeCube(location, location2, scolor, scene_objects);
-        		getline(scenefile,input); // Remove line
+        		getline(scenefile,input);
         }
     }
     else

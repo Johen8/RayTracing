@@ -5,7 +5,7 @@
 #include "Vect.h"
 #include "Color.h"
 
-class Source
+class Source //main function for light sources
 {
     public:
     Source();

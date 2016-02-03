@@ -5,15 +5,16 @@
 #include "Vect.h"
 #include "Color.h"
 
-class Object
+class Object //Class that all objects derives from with variables and functions that all of them should have
 {
     public:
     Object();
+    Color color;
 
     //method functions
     virtual Color getColor()
     {
-        return Color (0.0,0.0,0.0,0.0);
+        return color;
     }
 
     virtual double findIntersection(Ray ray)
@@ -30,6 +31,7 @@ class Object
 
 Object::Object()
 {
+    color = Color (0.0,0.0,0.0,0.0);
 }
 
 #endif

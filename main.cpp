@@ -25,8 +25,13 @@
 #include "Essentials.h"
 #include "SceneParser.h"
 
+#include "omp.h"
+
 using namespace std;
 
+/* Function that takes two corners of a cube and creates adequately
+* placed triangles to form the cube. Also adds them to the scene_objects vector
+*/
 void makeCube (Vect corner1, Vect corner2, Color color, vector<Object*>& scene_objects)
 {
         //corner1
@@ -70,23 +75,23 @@ void makeCube (Vect corner1, Vect corner2, Color color, vector<Object*>& scene_o
 
 int main()
 {
-    clock_t t1, t2;
-    time_t now;
+    clock_t t1, t2; //clock variables used to measure running time and
+    time_t now;     //for image filename purposes
     t1 = clock();
 
-    vector<Object*> scene_objects;
+    vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
     vector<Source*> light_sources;
 
-    char arquivo[25];
+    char file_name[25]; //variables for collecting the path and for creating the filename
     string path;
     string filename2;
 
     int dpi=72;
     int width, height, aadepth;
     double ambientlight;
-    Vect campos, look_at;// (3, 1.5, -4);
+    Vect campos, look_at; //Vectors indicating camera position and where it should look at
     //Vect look_at (0,0,0);
-    try
+    try //try to parse the Scene file. Two types of common errors are catched
     {
         SceneParser(height, width, aadepth, ambientlight, campos, look_at, scene_objects,
                 light_sources, path);
@@ -108,8 +113,7 @@ int main()
     }
     cout <<endl<< "rendering..." << endl;
 
-    int n = width*height;
-    int thisone;
+    int n = width*height; //number of pixels in the image
     RGBType *pixels = new RGBType[n];
 
    // double aathreshold = 0.1;
@@ -126,13 +130,17 @@ int main()
 
     Vect diff_btw (campos.getVectX() - look_at.getVectX(),
                    campos.getVectY() - look_at.getVectY(),
-                   campos.getVectZ() - look_at.getVectZ());
+                   campos.getVectZ() - look_at.getVectZ()); //vector representing the difference
+                                                            //between camera position and where it
+                                                            //should look at
 
     Vect camdir = diff_btw.negative().normalize();
     Vect camright = Y.crossProduct(camdir).normalize();
     Vect camdown = camright.crossProduct(camdir);
 
     Camera scene_cam (campos, camdir, camright, camdown);
+ /* OLD CODE -- NOT BEING USED -- KEEPING IT FOR THE SAKE OF NECESSITY --
+    FROM BEFORE SCENE PARSER WAS CREATED
 
     Color white_light (1.0, 1.0, 1.0, 0);
     Color pretty_green(0.5, 1.0, 0.5, 0.3);
@@ -159,16 +167,26 @@ int main()
     //scene_objects.push_back(dynamic_cast<Object*>(&scene_triangle));
 
     //makeCube(Vect (1,1,1), Vect(-1,-1,-1), orange, scene_objects);
-
+*/
     double xamnt, yamnt;
     //double tempRed, tempGreen, tempBlue;
+    int x,y;
 
-    for (int x = 0; x < width; x++) //percorre os pixels um a um
+    #pragma omp parallel for private(y, xamnt, yamnt) //Parallelization utilizing OpenMP
+                            //y, xamnt, yamnt are private variables, it means each thread
+                            //has its own version of the variable
+    for (x = 0; x < width; x++) //going through all the pixels one by one
     {
-        for(int y = 0; y < height; y++)
+        for(y = 0; y < height; y++)
         {
-            thisone = y*width + x;
+            //cout<< y << endl;
 
+            int thisone=0;
+            #pragma omp critical //only one thread executes this command at a time
+                                //there were some wrong pixels without it
+            {
+                thisone = (y*width + x);
+            }
             //start with a blank pixel
             double tempRed[aadepth*aadepth];
             double tempGreen[aadepth*aadepth];
@@ -180,13 +198,10 @@ int main()
                 {
                     int aa_index = aay*aadepth + aax;
 
-                    srand(time(0));
-
-                    // create the ray from the camera to this pixel
                     if(aadepth == 1)
                     { //no AA
                         //start with no anti-aliasing
-                        if(width>height) //serve para os raios que saem da camera cobrirem o plano da imagem
+                        if(width>height) //this is used to make the rays coming from the camera to cover the plane of the image
                         {
                             //the image is wider than it is tall
                             xamnt = ((x+0.5)/width)*aspectratio -
@@ -209,8 +224,8 @@ int main()
                     }
                     else
                     {
-                        // anti-aliasing
-                        if(width>height) //serve para os raios que saem da camera cobrirem o plano da imagem
+                        // anti-aliasing by supersampling
+                        if(width>height)
                         {
                             //the image is wider than it is tall
                             xamnt = ((x+(double)aax/((double)aadepth - 1))/width)*aspectratio -
@@ -231,6 +246,7 @@ int main()
                             yamnt = ((height - y) + (double)aax/((double)aadepth - 1))/height;
                         }
                     }
+                    // create the ray from the camera to this pixel
 
                     Vect cam_ray_origin = scene_cam.getCameraPosition();
                     Vect cam_ray_direction = camdir.vectAdd(camright.vectMult(xamnt - 0.5).vectAdd(
@@ -238,7 +254,7 @@ int main()
 
                     Ray cam_ray(cam_ray_origin,cam_ray_direction);
 
-                    vector<double> intersections;
+                    vector<double> intersections; //vector used to find all the intersections of each ray
 
                     for (unsigned index = 0; index < scene_objects.size(); index++)
                     {
@@ -247,10 +263,10 @@ int main()
 
                     int index_of_winning_object = winningObjectIndex(intersections);
 
-                    if(index_of_winning_object == -1)
+                    if(index_of_winning_object == -1) //no intersections found
                     {
                         //set the background black
-                        tempRed[aa_index]=0./255; //vetor pixels é a matrix feita numa linha (daí que vem o indice thisone)
+                        tempRed[aa_index]=0./255;
                         tempGreen[aa_index]=0./255;
                         tempBlue[aa_index]=0./255;
                     }
@@ -274,8 +290,8 @@ int main()
                                                                   accuracy,
                                                                   ambientlight);
 
-                            //nao basta a cor do objeto, precisamos da cor na coordenada certa!! por causa
-                            //de sombras e tal,
+                            //not only the object color is important, the color on the
+                            //specific coordinate is important because of shadows, for example
                             tempRed[aa_index]=intersection_color.getColorRed();
                             tempGreen[aa_index]=intersection_color.getColorGreen();
                             tempBlue[aa_index]=intersection_color.getColorBlue();
@@ -305,16 +321,19 @@ int main()
             double avgGreen = totalGreen/(aadepth*aadepth);
             double avgBlue = totalBlue/(aadepth*aadepth);
 
-            pixels[thisone].r=avgRed;
-            pixels[thisone].g=avgGreen;
-            pixels[thisone].b=avgBlue;
+            #pragma omp critical
+            {
+                pixels[thisone].r=avgRed;
+                pixels[thisone].g=avgGreen;
+                pixels[thisone].b=avgBlue;
+            }
         }
-    }
+    } //END OF PARALLELIZED REGION
 
     now = time(NULL);
-    strftime(arquivo,25,"%Y-%m-%d %H.%M.%S.bmp",localtime(&now));
+    strftime(file_name,25,"%Y-%m-%d %H.%M.%S.bmp",localtime(&now));
 
-    filename2 = arquivo;
+    filename2 = file_name;
     filename2 = path+filename2;
     //cout << filename2 << endl;
 

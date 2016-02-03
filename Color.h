@@ -3,7 +3,12 @@
 
 class Color
 {
-    double red, green, blue, special; //special usado para reflexão
+    double red, green, blue, special; //special value can be used for many purposes
+                                      //currently it can be used between 0 and 1 to make
+                                      //a reflective surface and as 2 to make a checkered surface
+                                      //other properties such as transparency can be added
+                                      //through this variable and the proper addition of
+                                      //commands in the getColorAt function
 
     public:
     Color();
@@ -114,6 +119,7 @@ Color::Color()
     red = 0.5;
     green = 0.5;
     blue = 0.5;
+    special = 0;
 }
 
 Color::Color(double r, double g, double b, double s)

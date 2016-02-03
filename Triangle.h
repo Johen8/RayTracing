@@ -51,12 +51,12 @@ class Triangle : public Object
         return color;
     }
 
-    virtual Vect getNormalAt(Vect point) //Implementar em Object?
+    virtual Vect getNormalAt(Vect point)
     {
         return normal;
     }
 
-    virtual double findIntersection(Ray ray) //Implementar em Object?
+    virtual double findIntersection(Ray ray)
     {
         Vect ray_direction = ray.getRayDirection();
         Vect ray_origin = ray.getRayOrigin();
