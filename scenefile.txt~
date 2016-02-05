@@ -2,13 +2,13 @@
 //If you want 0 objects in any moment, leave the parameters line after the '//' line blank! Mind the commas!!
 //Re Gr Bl colors range from 0 to 1!
 //Give me the path you want to save the images (please use double '\', like in example)
-C:\\Users\\nicolas\\Desktop\\RayTracing\\Resultados\\
+T:\\GitHub\\RayTracing\\Resultados\\
 //Width of the image in pixels
-100
+640
 //Height of the image in pixels
-100
+480
 //AA depth of the image, recommended maximum 4
-3
+6
 //Ambient light of the image
 0.35
 //How many light sources do you want?
@@ -17,7 +17,7 @@ C:\\Users\\nicolas\\Desktop\\RayTracing\\Resultados\\
 //Format: X Y Z, Re Gr Bl
 -7 10 -10, 1 1 1
 //Camera position in a X Y Z format, please
-1 5 11
+3 5 7
 //Where do you want the camera to look at, in X Y Z format
 1.75 0 0
 //How many planes do you want? (recommended 1)
@@ -29,9 +29,8 @@ C:\\Users\\nicolas\\Desktop\\RayTracing\\Resultados\\
 1
 //Sphere positions, radius and color
 //Format: X Y Z R, Re Gr Bl Sp
-3 0 0 2, 0.5 0.1 0.25 0.1
+1.75 0 0 2, 0.5 0.25 0.25 0.1
 //How many cubes do you want?
-1
+0
 //Give me two opposite corners of the cube and its color
 //Format: X Y Z, X Y Z, Re Gr Bl Sp
-0 0 0, 1 1 1, 0.7 0.4 0.85 0.1

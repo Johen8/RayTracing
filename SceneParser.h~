@@ -76,7 +76,7 @@ class SceneCreator{
 }
 
 //test if given path is valid by creating a dummy file
-private: void testPath(string path)
+void testPath(string path)
 {
     string dummy = "dummy.txt";
     FILE *f1=fopen((path+dummy).c_str(),"wb");
