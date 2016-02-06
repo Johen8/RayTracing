@@ -251,7 +251,7 @@ public :
             throw -1;
         }
         Scene* sne = new Scene( height, width, aadepth, ambientlight, campos, look_at, scene_objects, light_sources);
-		  return sne;
+        return sne;
     }
 
 };

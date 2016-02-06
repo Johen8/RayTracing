@@ -74,7 +74,7 @@ public :
         double xamnt, yamnt;
         //double tempRed, tempGreen, tempBlue;
         int x,y;
-		  
+
         #pragma omp parallel for private(y, xamnt, yamnt) //Parallelization utilizing OpenMP
         //y, xamnt, yamnt are private variables, it means each thread
         //has its own version of the variable

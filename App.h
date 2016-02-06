@@ -100,7 +100,7 @@ public:
         filename2 = file_name;
         filename2 = path+filename2;
         //cout << filename2 << endl;
-	
+
         savebmp(filename2.c_str(), width, height, dpi, pixels);
 
 
