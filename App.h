@@ -110,7 +110,7 @@ void savebmp (const char *filename, int w, int h, int dpi, RGBType *data)
             double green = (data[i].g)*255;
             double blue = (data[i].b)*255;
 
-            unsigned char color[3]= {(unsigned char)floor(blue),(unsigned char)floor(green),(unsigned char)floor(red)};
+            unsigned char color[3]= {(unsigned char)(blue),(unsigned char)(green),(unsigned char)(red)};
 
             fwrite(color,1,3,f);
         }
