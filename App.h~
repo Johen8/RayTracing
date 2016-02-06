@@ -39,21 +39,6 @@ class App
 	 
 	 static App* instance;
 
-    clock_t t1, t2; //clock variables used to measure running time and
-    time_t now;     //for image filename purposes
-    vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
-    vector<Source*> light_sources;
-	 SceneCreator* sCreator;
-
-    char file_name[25]; //variables for collecting the path and for creating the filename
-    string path;
-    string filename2;
-
-    int dpi;
-    int width, height, aadepth;
-    double ambientlight;
-    Vect campos, look_at; //Vectors indicating camera position and where it should look at
-
 public: static App* getInstance(){
 	if( NULL == instance ){
 			  instance = new App();
@@ -62,11 +47,22 @@ public: static App* getInstance(){
 }
 	 public: void run()
 {
+    clock_t t1, t2; //clock variables used to measure running time and
+    time_t now;     //for image filename purposes
     t1 = clock();
 
-	 sCreator = new SceneCreator();
+    vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
+    vector<Source*> light_sources;
+	 SceneCreator* sCreator = new SceneCreator();
 
-	 dpi=72;
+    char file_name[25]; //variables for collecting the path and for creating the filename
+    string path;
+    string filename2;
+
+    int dpi=72;
+    int width, height, aadepth;
+    double ambientlight;
+    Vect campos, look_at; //Vectors indicating camera position and where it should look at
     //Vect look_at (0,0,0);
     try //try to parse the Scene file. Two types of common errors are catched
     {
