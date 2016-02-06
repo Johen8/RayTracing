@@ -97,13 +97,13 @@ private:
     }
 
 public :
-    Scene* SceneParser( int &width, int &height, string &path )
+    Scene* SceneParser( int width, int heigth, string &path )
     {
-        vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
-        vector<Source*> light_sources;
-        int aadepth;
-        double ambientlight;
-        Vect campos, look_at; //Vectors indicating camera position and where it should look at
+	vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
+    vector<Source*> light_sources;
+    int aadepth;
+    double ambientlight;
+    Vect campos, look_at; //Vectors indicating camera position and where it should look at
 
         ifstream scenefile;
         int spheres, planes, sources, cubes;
@@ -250,8 +250,7 @@ public :
         {
             throw -1;
         }
-        Scene* sne = new Scene( height, width, aadepth, ambientlight, campos, look_at, scene_objects, light_sources);
-		  return sne;
+	return Scene( heigth, width, aadepth, ambientlight, campos, look_at, scene_objects, light_sources);
     }
 
 };

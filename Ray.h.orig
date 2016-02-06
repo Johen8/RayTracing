@@ -7,7 +7,7 @@ class Ray
 {
     Vect origin, direction;
 
-public:
+    public:
     Ray();
 
     Ray(Vect, Vect);

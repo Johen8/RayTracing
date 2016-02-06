@@ -42,17 +42,17 @@ private:
 
     clock_t t1, t2; //clock variables used to measure running time and
     time_t now;     //for image filename purposes
-
+    
     char file_name[25]; //variables for collecting the path and for creating the filename
     string path;
-    int width, height;
+	 int width, height;
 
     string filename2;
+    RGBType *pixels;
     int dpi;
     SceneCreator* sCreator;
-    Scene* scene;
-
-    RGBType *pixels;
+	 Scene* scene;
+    
 
 public:
     static App* getInstance() {
@@ -67,12 +67,12 @@ public:
         t1 = clock();
 
 
-        sCreator = new SceneCreator( );
+        sCreator = new SceneCreator( width, height, &path );
 
         //Vect look_at (0,0,0);
         try //try to parse the Scene file. Two types of common errors are catched
         {
-            scene = sCreator->SceneParser(height, width, path);
+            scene = sCreator->SceneParser(height, width, &path);
         }
         catch (int err)
         {
@@ -90,20 +90,17 @@ public:
             }
         }
         cout <<endl<< "rendering..." << endl;
-
-        pixels = scene->getPixels();
-
-        dpi=72;
+				
+	pixels = scene.getPixels();
+	dpi=72;
         now = time(NULL);
         strftime(file_name,25,"%Y-%m-%d %H.%M.%S.bmp",localtime(&now));
 
         filename2 = file_name;
         filename2 = path+filename2;
         //cout << filename2 << endl;
-	
-	printf("-%d %d--%f----\n", width, height, pixels[4].r);
-        savebmp(filename2.c_str(), width, height, dpi, pixels);
 
+        savebmp(filename2.c_str(), width, height, dpi, pixels);
 
         delete pixels;//, tempRed, tempGreen, tempBlue;
 

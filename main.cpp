@@ -34,8 +34,8 @@ using namespace std;
 int main()
 {
 
-	App *app;
-   app = App::getInstance(); 
-	app -> run();
-   return 0;
+    App *app;
+    app = App::getInstance();
+    app -> run();
+    return 0;
 }

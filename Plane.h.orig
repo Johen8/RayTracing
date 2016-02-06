@@ -12,7 +12,7 @@ class Plane : public Object
     double distance;
 
 
-public:
+    public:
     Plane();
 
     Plane(Vect, double, Color);

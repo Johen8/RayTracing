@@ -10,7 +10,7 @@ class Light : public Source
     Vect position;
     Color color;
 
-public:
+    public:
     Light();
 
     Light(Vect, Color);

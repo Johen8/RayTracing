@@ -7,7 +7,7 @@
 
 class Source //main function for light sources
 {
-public:
+    public:
     Source();
 
     virtual Vect getLightPosition()

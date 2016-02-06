@@ -13,7 +13,7 @@ class Triangle : public Object
     double distance;
     Color color;
 
-public:
+    public:
     Triangle();
 
     Triangle(Vect, Vect, Vect, Color);
@@ -81,36 +81,36 @@ public:
 
             // [CAxQA]*n >= 0
             Vect CA(C.getVectX() - A.getVectX(),
-                    C.getVectY() - A.getVectY(),
-                    C.getVectZ() - A.getVectZ());
+                C.getVectY() - A.getVectY(),
+                C.getVectZ() - A.getVectZ());
             Vect QA(Q.getVectX() - A.getVectX(),
-                    Q.getVectY() - A.getVectY(),
-                    Q.getVectZ() - A.getVectZ());
+                Q.getVectY() - A.getVectY(),
+                Q.getVectZ() - A.getVectZ());
             double test1 = (CA.crossProduct(QA)).dotProduct(normal);
             // [BCxQC]*n >= 0
             Vect BC(B.getVectX() - C.getVectX(),
-                    B.getVectY() - C.getVectY(),
-                    B.getVectZ() - C.getVectZ());
+                B.getVectY() - C.getVectY(),
+                B.getVectZ() - C.getVectZ());
             Vect QC(Q.getVectX() - C.getVectX(),
-                    Q.getVectY() - C.getVectY(),
-                    Q.getVectZ() - C.getVectZ());
+                Q.getVectY() - C.getVectY(),
+                Q.getVectZ() - C.getVectZ());
             double test2 = (BC.crossProduct(QC)).dotProduct(normal);
             // [ABxQB]*n >= 0
             Vect AB(A.getVectX() - B.getVectX(),
-                    A.getVectY() - B.getVectY(),
-                    A.getVectZ() - B.getVectZ());
+                A.getVectY() - B.getVectY(),
+                A.getVectZ() - B.getVectZ());
             Vect QB(Q.getVectX() - B.getVectX(),
-                    Q.getVectY() - B.getVectY(),
-                    Q.getVectZ() - B.getVectZ());
+                Q.getVectY() - B.getVectY(),
+                Q.getVectZ() - B.getVectZ());
             double test3 = (AB.crossProduct(QB)).dotProduct(normal);
             //Q is point of intersection
 
             if((test1>=0) && (test2 >= 0) && (test3 >= 0))
-            {   // inside triangle
+            {// inside triangle
                 return -1*b/a;
             }
             else
-            {   //outside triangle
+            {//outside triangle
                 return -1;
             }
         }

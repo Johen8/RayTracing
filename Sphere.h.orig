@@ -12,7 +12,7 @@ class Sphere : public Object
     double radius;
 
 
-public:
+    public:
     Sphere();
 
     Sphere(Vect, double, Color);

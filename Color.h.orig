@@ -4,13 +4,13 @@
 class Color
 {
     double red, green, blue, special; //special value can be used for many purposes
-    //currently it can be used between 0 and 1 to make
-    //a reflective surface and as 2 to make a checkered surface
-    //other properties such as transparency can be added
-    //through this variable and the proper addition of
-    //commands in the getColorAt function
+                                      //currently it can be used between 0 and 1 to make
+                                      //a reflective surface and as 2 to make a checkered surface
+                                      //other properties such as transparency can be added
+                                      //through this variable and the proper addition of
+                                      //commands in the getColorAt function
 
-public:
+    public:
     Color();
 
     Color(double, double, double, double);
@@ -36,18 +36,10 @@ public:
         return special;
     }
 
-    void setColorRed(double redValue) {
-        red = redValue;
-    }
-    void setColorGreen(double greenValue) {
-        green = greenValue;
-    }
-    void setColorBlue(double blueValue) {
-        blue = blueValue;
-    }
-    void setColorSpecial(double specialValue) {
-        special = specialValue;
-    }
+    void setColorRed(double redValue) { red = redValue; }
+    void setColorGreen(double greenValue) { green = greenValue; }
+    void setColorBlue(double blueValue) { blue = blueValue; }
+    void setColorSpecial(double specialValue) { special = specialValue; }
 
     double brightness()
     {

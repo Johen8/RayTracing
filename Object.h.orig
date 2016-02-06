@@ -7,7 +7,7 @@
 
 class Object //Class that all objects derives from with variables and functions that all of them should have
 {
-public:
+    public:
     Object();
     Color color;
 

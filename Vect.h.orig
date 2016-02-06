@@ -5,7 +5,7 @@ class Vect
 {
     double x, y, z;
 
-public:
+    public:
     Vect();
 
     Vect(double, double, double);

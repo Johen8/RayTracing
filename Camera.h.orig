@@ -7,7 +7,7 @@ class Camera
 {
     Vect campos, camdir, camright, camdown;
 
-public:
+    public:
     Camera();
 
     Camera(Vect, Vect, Vect, Vect);
