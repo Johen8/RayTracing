@@ -8,24 +8,24 @@ T:\\GitHub\\RayTracing\\Resultados\\
 //Height of the image in pixels
 768
 //AA depth of the image, recommended maximum 4
-1
+4
 //Ambient light of the image
 0.15
 //How many light sources do you want?
-2
+1
 //What is the position and the color of the light source?
 //Format: X Y Z, Re Gr Bl
 -7 10 -10, 1 1 1
-7 10 -10, 1 1 1
 //Camera position in a X Y Z format, please
-1 5 -7
+-1 5 -7
 //Where do you want the camera to look at, in X Y Z format
 1.75 0 0
 //How many planes do you want? (recommended 1)
-1
+2
 //Plane(s) normal, distance from the origin in the normal direction and color of the plane
 //Format: X Y Z d, Re Gr Bl Sp
-0 1 0 -1, 0.1 0.1 0.2 2
+0 1 0 -1, 0.5 0.6 0.8 2
+0 0 -1 -4, 0.7 0.7 0.7 0.1
 //How many spheres do you want?
 3
 //Sphere positions, radius and color
@@ -37,4 +37,4 @@ T:\\GitHub\\RayTracing\\Resultados\\
 1
 //Give me two opposite corners of the cube and its color
 //Format: X Y Z, X Y Z, Re Gr Bl Sp
--1 -1 -1, 1 1 1, 0.7 0.7 0 0
+-1 -1 -1, 1 1 1, 0 0.7 0.7 0.1
