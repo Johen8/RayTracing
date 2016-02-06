@@ -171,7 +171,7 @@ public:
         filename2 = path+filename2;
         //cout << filename2 << endl;
 
-		  App::getInstance()->savebmp(filename2.c_str(), width, height, dpi, pixels);
+		  App::getInstance().savebmp(filename2.c_str(), width, height, dpi, pixels);
 
 
         delete pixels;//, tempRed, tempGreen, tempBlue;
