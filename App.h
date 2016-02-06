@@ -142,7 +142,7 @@ public:
         //Vect look_at (0,0,0);
         try //try to parse the Scene file. Two types of common errors are catched
         {
-            scene = sCreator->SceneParser(height, width, path);
+            scene = sCreator->SceneParser(width, height, path);
         }
         catch (int err)
         {
