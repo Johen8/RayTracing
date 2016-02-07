@@ -44,6 +44,7 @@ private:
     time_t now;     //for image filename purposes
 
     char file_name[25]; //variables for collecting the path and for creating the filename
+    string scene_file = "scenefile.txt";
     string path;
     int width, height;
 
@@ -134,31 +135,38 @@ public:
 public:
     void run()
     {
-        t1 = clock();
-
-
         sCreator = new SceneCreator( );
+        bool leave_loop = false;
 
         //Vect look_at (0,0,0);
-        try //try to parse the Scene file. Two types of common errors are catched
+        while(!leave_loop)
         {
-            scene = sCreator->SceneParser(width, height, path);
-        }
-        catch (int err)
-        {
-            if (err == -1)
+            try //try to parse the Scene file. Two types of common errors are catched
             {
-                cout << "It was not possible to open the \"scenefile.txt\" file, check if it is in the folder"<< endl;
-                getchar();
-                exit( -1 );
+                scene = sCreator->SceneParser(width, height, path, scene_file);
+                leave_loop = true;
             }
-            else if (err == -2)
+            catch (int err)
             {
-                cout << "Invalid path chosen! Please verify Scene File!" <<endl;
-                getchar();
-                exit( -2 );
+                if (err == -1)
+                {
+                    cout << "It was not possible to open the \"" << scene_file << "\" file, check if it is in the folder."<< endl << endl;
+                    cout << "If you want to use another scene file that is in the Ray Tracer folder, type its name below, or 'exit' to abort:" <<endl;
+                    cin >> scene_file;
+                    getchar();
+                    if (scene_file == "exit")
+                        exit(-1);
+                }
+                else if (err == -2)
+                {
+                    cout << "Invalid output path chosen! Please verify Scene File!" <<endl;
+                    getchar();
+                    exit( -2 );
+                }
             }
         }
+        t1 = clock();
+
         cout <<endl<< "rendering..." << endl;
 
         pixels = scene->getPixels();

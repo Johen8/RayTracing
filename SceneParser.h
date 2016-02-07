@@ -97,7 +97,7 @@ private:
     }
 
 public :
-    Scene* SceneParser( int &width, int &height, string &path )
+    Scene* SceneParser( int &width, int &height, string &path, string &scene_file )
     {
         vector<Object*> scene_objects; //vector that contains objects, notice that it is a vector of Object
         vector<Source*> light_sources;
@@ -109,7 +109,7 @@ public :
         int spheres, planes, sources, cubes;
         double xi, yi, zi, ri, cri, cgi, cbi, csi, di;
         string input;
-        scenefile.open("scenefile.txt");
+        scenefile.open(scene_file.c_str());
         if(scenefile.is_open()) //if cannot open scenefile, throw proper error
         {
             getline(scenefile,input); //1
