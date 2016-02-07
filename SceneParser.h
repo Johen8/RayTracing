@@ -145,21 +145,28 @@ public :
             getline(scenefile,input); //16
             getline(scenefile,input); //17
             cout<<endl<<"Ambient Ligth: "<<ambientlight<<", N Sources: "<< sources <<endl;
-            for (int i = 0; i < sources; i++)
+            if (sources>0)
             {
-                // READ FORMAT 18
-                scenefile >> xi >> yi >> zi;
-                cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
-                scenefile.ignore();
-                scenefile >> cri >> cgi >> cbi;
-                getline(scenefile,input);     // FORMAT 18
-                cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi <<endl;
-                Vect location (xi, yi, zi);
-                //cout << location.getVectX() << endl;
-                Color scolor (cri, cgi, cbi, 0);
-                //cout << scolor.getColorBlue() << endl;
-                Light* light_input = new Light(location, scolor);
-                light_sources.push_back(dynamic_cast<Source*>(light_input));
+                for (int i = 0; i < sources; i++)
+                {
+                    // READ FORMAT 18
+                    scenefile >> xi >> yi >> zi;
+                    cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
+                    scenefile.ignore();
+                    scenefile >> cri >> cgi >> cbi;
+                    getline(scenefile,input);     // FORMAT 18
+                    cout <<"R: "<< cri<< " G: "<< cgi << " B: "<< cbi <<endl;
+                    Vect location (xi, yi, zi);
+                    //cout << location.getVectX() << endl;
+                    Color scolor (cri, cgi, cbi, 0);
+                    //cout << scolor.getColorBlue() << endl;
+                    Light* light_input = new Light(location, scolor);
+                    light_sources.push_back(dynamic_cast<Source*>(light_input));
+                }
+            }
+            else
+            {
+                getline(scenefile,input);
             }
 
             getline(scenefile,input); // CAMERA POSITION
@@ -181,8 +188,10 @@ public :
 
             getline(scenefile,input); //planes
             getline(scenefile,input); // Format planes
-            for (int i = 0; i < planes; i++) //with the number of planes, adds them to the Object vector
+            if(planes > 0)
             {
+                for (int i = 0; i < planes; i++) //with the number of planes, adds them to the Object vector
+                {
                 scenefile >> xi >> yi >> zi >> di;
                 cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " d: " << di <<endl;
                 scenefile.ignore();
@@ -193,6 +202,11 @@ public :
                 Plane* plane_input = new Plane(location, di, scolor);
                 scene_objects.push_back(dynamic_cast<Object*>(plane_input)); //dynamic cast used to add a Plane object to a Object vector
                 getline(scenefile,input);
+                }
+            }
+            else
+            {
+                getline(scenefile,input);
             }
 
             getline(scenefile,input); // N Spheres
@@ -202,8 +216,10 @@ public :
 
             getline(scenefile,input); // Spheres
             getline(scenefile,input); // Format Spheres
-            for (int i = 0; i < spheres; i++)
+            if (spheres>0)
             {
+                for (int i = 0; i < spheres; i++)
+                {
                 scenefile >> xi >> yi >> zi >> ri;
                 cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi << " r: " << ri <<endl;
                 scenefile.ignore();
@@ -220,7 +236,13 @@ public :
                 //by 'new' is still there
                 scene_objects.push_back(dynamic_cast<Object*>(sphere_input));
                 getline(scenefile,input);
+                }
             }
+            else
+            {
+                getline(scenefile,input);
+            }
+
 
             getline(scenefile,input); // N Cubes
             scenefile >> cubes;		// get
@@ -229,8 +251,10 @@ public :
 
             getline(scenefile,input); // Cubes
             getline(scenefile,input); // Format Cubes
-            for (int i = 0; i < cubes; i++)
+            if(cubes > 0)
             {
+                for (int i = 0; i < cubes; i++)
+                {
                 scenefile >> xi >> yi >> zi;
                 cout <<"X: "<< xi<< " Y: "<< yi << " Z: "<< zi <<endl;
                 scenefile.ignore();
@@ -244,7 +268,13 @@ public :
                 Color scolor (cri, cgi, cbi, csi);
                 makeCube(location, location2, scolor, scene_objects);
                 getline(scenefile,input);
+                }
             }
+            else
+            {
+                getline(scenefile,input);
+            }
+
         }
         else
         {
