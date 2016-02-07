@@ -114,7 +114,13 @@ Color getColorAt(Vect intersection_position,
         Vect add2 = intersecting_ray_direction.negative().vectAdd(scalar2);
         Vect reflection_direction = add2.normalize();
 
-        Ray reflection_ray (intersection_position,reflection_direction);
+        double acc3 = accuracy;
+
+        Vect int_pos3 = Vect (intersection_position.getVectX()+acc3*reflection_direction.getVectX(),
+                                      intersection_position.getVectY()+acc3*reflection_direction.getVectY(),
+                                      intersection_position.getVectZ()+acc3*reflection_direction.getVectZ());
+
+        Ray reflection_ray (int_pos3,reflection_direction);
 
         //determine what the ray intersects with first
         vector<double> reflection_intersections;
@@ -169,12 +175,21 @@ Color getColorAt(Vect intersection_position,
                                          intersection_position.negative());
             float distance_to_light_magnitude = distance_to_light.magnitude();
 
-            Ray shadow_ray(intersection_position,
-                           light_sources.at(light_index)->getLightPosition().vectAdd(
-                               intersection_position.negative()).normalize());
+            Vect sh_dir = light_sources.at(light_index)->getLightPosition().vectAdd(
+                               intersection_position.negative()).normalize();
+
+            double acc2 = accuracy;
+
+            Vect int_pos2 = Vect (intersection_position.getVectX()+acc2*sh_dir.getVectX(),
+                                      intersection_position.getVectY()+acc2*sh_dir.getVectY(),
+                                      intersection_position.getVectZ()+acc2*sh_dir.getVectZ());
+
+            Ray shadow_ray(int_pos2,
+                           sh_dir);
+
             vector<double> secondary_intersections;
 
-            for (unsigned object_index = 0; object_index < scene_objects.size() && shadowed == false; object_index++)
+            for (unsigned object_index = 0; object_index < scene_objects.size(); object_index++)
             {
                 secondary_intersections.push_back(scene_objects.at(object_index)->
                                                   findIntersection(shadow_ray));
